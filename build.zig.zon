@@ -1,0 +1,23 @@
+.{ .name = "Simp", .version = "0.0.0", .minimum_zig_version = "0.13.0", .dependencies = .{
+    .@"zig-wayland" = .{
+        .path = "deps/zig-wayland",
+        .lazy = false,
+    },
+    .zigglgen = .{
+        .path = "deps/zigglgen",
+        .lazy = true,
+    },
+    .@"vulkan-zig" = .{
+        .path = "deps/vulkan-zig",
+        .lazy = true,
+    },
+}, .paths = .{
+    "LICENSE",
+    "README.md",
+    "build.zig",
+    "build.zig.zon",
+    "flake.lock",
+    "flake.nix",
+    "src",
+    "deps",
+} }
