@@ -1,6 +1,7 @@
 const std = @import("std");
 const mem = std.mem;
 const posix = std.posix;
+const options = @import("build_options");
 
 const wayland = @import("wayland");
 const wl = wayland.client.wl;
@@ -17,11 +18,11 @@ const ClientContext = struct {
     wl_surface:   ?*wl.Surface = null,
     xdg_surface:  ?*xdg.Surface = null,
     xdg_toplevel: ?*xdg.Toplevel = null,
-
     // zig fmt: on
 };
 
 pub fn main() !void {
+    std.debug.print("  :: GL ==> {}\n", .{options.use_gl});
     var ctx: ClientContext = .{};
     ctx.display = wl.Display.connect(null) catch |err| {
         std.log.err("Failed to connect Wayland display: {}\n", .{err});

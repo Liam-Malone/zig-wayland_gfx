@@ -6,7 +6,7 @@ pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const use_gl = b.option(bool, "GL", "Use OpenGL instead of Vulkan") orelse false;
+    //const use_gl = b.option(bool, "GL", "Use OpenGL instead of Vulkan") orelse false;
     const exe = b.addExecutable(.{
         .name = "Simp",
         .root_source_file = b.path("src/main.zig"),
@@ -24,22 +24,17 @@ pub fn build(b: *std.Build) !void {
     scanner.generate("wl_shm", 2);
     scanner.generate("xdg_wm_base", 6);
 
-    if (use_gl) {
-        const gl_bindings = @import("zigglgen").generateBindingsModule(b, .{
-            .api = .gl,
-            .version = .@"4.1",
-            .profile = .core,
-        });
-        exe.root_module.addImport("gl", gl_bindings);
-    } else {
-        if (b.lazyDependency("vulkan-zig", .{
-            .target = target,
-            .optimize = optimize,
-            .registry = @as([]const u8, b.pathFromRoot("protocols/vulkan/vk.xml")),
-        })) |vkzig_dep| {
-            const vkzig_bindings = vkzig_dep.module("vulkan-zig");
-            exe.root_module.addImport("vulkan", vkzig_bindings);
-        }
+    const exe_options = b.addOptions();
+    exe_options.addOption(bool, "use_gl", b.option(bool, "use_gl", "Use OpenGL instead of Vulkan") orelse false);
+    exe.root_module.addOptions("build_options", exe_options);
+
+    if (b.lazyDependency("vulkan-zig", .{
+        .target = target,
+        .optimize = optimize,
+        .registry = @as([]const u8, b.pathFromRoot("protocols/vulkan/vk.xml")),
+    })) |vkzig_dep| {
+        const vkzig_bindings = vkzig_dep.module("vulkan-zig");
+        exe.root_module.addImport("vulkan", vkzig_bindings);
     }
 
     exe.root_module.addImport("wayland", wayland);
