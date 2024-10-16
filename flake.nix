@@ -28,9 +28,7 @@
             clang
             gcc
             mesa
-            pkg-config
             wayland
-            wayland-scanner
             zig
           ];
 

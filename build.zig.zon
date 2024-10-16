@@ -3,12 +3,12 @@
         .path = "deps/zig-wayland",
         .lazy = false,
     },
-    .zigglgen = .{
-        .path = "deps/zigglgen",
-        .lazy = true,
-    },
     .@"vulkan-zig" = .{
         .path = "deps/vulkan-zig",
+        .lazy = true,
+    },
+    .zigglgen = .{
+        .path = "deps/zigglgen",
         .lazy = true,
     },
 }, .paths = .{
